@@ -1,0 +1,22 @@
+email,                          groups              *** HEADER / FIRST LINE IS DISCARDED, SPACES AND EMPTY LINES ARE OK ***
+
+ahmed@BlockbusterVideo.com,     blockbustervideo    blockbustervideo/a                      all/a           stores/a
+elena@BlockbusterVideo.com,     blockbustervideo    blockbustervideo/a                      all/a           stores/a           
+jo@BlockbusterVideo.com,        blockbustervideo                        blockbustervideo/b          all/b   stores/b
+maria@BlockbusterVideo.com,     blockbustervideo                        blockbustervideo/b          all/b   stores/b
+
+
+david@CircuitCity.com,          circuitcity         circuitcity/a       circuitcity/b       all/a   all/b   stores/a    stores/b
+li@CircuitCity.com,             circuitcity         circuitcity/a                           all/a           stores/a
+mo@CircuitCity.com,             circuitcity         circuitcity/pm                          all/pm
+nushi@CircuitCity.com,          circuitcity         circuitcity/dev                         all/dev
+wei@CircuitCity.com,            circuitcity         circuitcity/dev                         all/dev
+
+
+anna@PanAm.com,                 panam               panam/a                                 all/a           airlines/a
+james@PanAm.com,                panam                                   panam/b             all/b           airlines/b
+juan@PanAm.com,                 panam               panam/pm                                all/pm
+mary@PanAm.com,                 panam
+
+
+YOUR_EMAIL_HERE,                admin blockbustervideo blockbustervideo/a blockbustervideo/b all/a all/b all/pm all/dev stores/a stores/b airlines/a airlines/b circuitcity circuitcity/a circuitcity/b circuitcity/dev panam panam/a panam/b panam/pm 
