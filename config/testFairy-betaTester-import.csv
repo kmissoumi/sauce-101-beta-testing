@@ -8,15 +8,14 @@ maria@BlockbusterVideo.com,     blockbustervideo                        blockbus
 
 david@CircuitCity.com,          circuitcity         circuitcity/a       circuitcity/b       all/a   all/b   stores/a    stores/b
 li@CircuitCity.com,             circuitcity         circuitcity/a                           all/a           stores/a
-mo@CircuitCity.com,             circuitcity         circuitcity/pm                          all/pm
-nushi@CircuitCity.com,          circuitcity         circuitcity/dev                         all/dev
-wei@CircuitCity.com,            circuitcity         circuitcity/dev                         all/dev
+mo@CircuitCity.com,             circuitcity         circuitcity/pm                         
+nushi@CircuitCity.com,          circuitcity         circuitcity/dev                        
+wei@CircuitCity.com,            circuitcity         circuitcity/dev                        
 
 
 anna@PanAm.com,                 panam               panam/a                                 all/a           airlines/a
-james@PanAm.com,                panam                                   panam/b             all/b           airlines/b
-juan@PanAm.com,                 panam               panam/pm                                all/pm
+james@PanAm.com,                panam                                   panam/b                     all/b   airlines/b
+juan@PanAm.com,                 panam               panam/pm
 mary@PanAm.com,                 panam
 
-
-YOUR_EMAIL_HERE,                admin blockbustervideo blockbustervideo/a blockbustervideo/b all/a all/b all/pm all/dev stores/a stores/b airlines/a airlines/b circuitcity circuitcity/a circuitcity/b circuitcity/dev panam panam/a panam/b panam/pm 
+YOUR_EMAIL_HERE,                admin blockbustervideo blockbustervideo/a blockbustervideo/b all/a all/b tores/a stores/b airlines/a airlines/b circuitcity circuitcity/a circuitcity/b circuitcity/dev panam panam/a panam/b panam/pm

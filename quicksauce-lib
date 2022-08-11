@@ -1,0 +1,272 @@
+function loggy {
+  printf "%5s: %s\n" "${1}" "${2}"
+}
+
+
+function log_error {
+  loggy "ERROR" "${1}"
+}
+
+
+function log_info {
+  loggy "INFO" "${1}"
+}
+
+
+function log_warn {
+  loggy "WARN" "${1}"
+}
+
+
+function log_debug {
+  [[ ${PARTY_MODE} ]] || return
+  loggy "DEBUG" "${1}"
+}
+
+
+function log_json_debug {
+  [[ ${PARTY_MODE} ]] || return
+  log_json "${1}" "${2}"  
+}
+
+
+function log_json {
+  [[ -z ${2} ]]  && fileName=${1} || fileName=${2}
+  [[ -z ${timeStamp} ]] && timeStamp=$(date +"%Y-%m-%d_%H%M%S_%s")
+  scriptPath="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+  debugDir="${scriptPath}/.debug/${timeStamp}"
+
+  [[ -d ${debugDir} ]] || mkdir -p ${debugDir}
+  jq <<< ${!1} > "${debugDir}/${fileName}.json"
+  log_debug "Variable ${1} written to directory."
+  log_cmd_debug "${debugDir}/${fileName}.json"
+}
+
+
+function log_cmd {
+  printf "\t %s\n" "${1}"
+}
+
+
+function log_cmd_debug {
+  [[ ${PARTY_MODE} ]] || return
+  printf "\t %s\n" "${1}"
+}
+
+
+function log_loop {
+  for i in ${1} 
+    do
+    printf "\t %s\n" "${i}"
+  done
+}
+
+
+function party-converter {
+  # charles session to HAR file
+  log_info "Party converter is starting."
+
+  for fq in data/*/*/*.chls
+  do
+    d=$(dirname  -- ${fq})
+    f=$(basename -- ${fq})
+    ext="${f##*.}"
+    f="${f%.*}"
+    har="${d}/${f}.har"
+    [[ -f ${har} ]] && log_warn "Existing HAR file found. Skipping ${fq}" || run-party-converter ${fq} ${har}
+  done
+  log_info "Party converter has finished."
+}
+
+
+function run-party-converter {
+  source=${1}
+  target=${2}
+  log_info "Converting CharlesProxy session to HTTP archive format (HAR). ${source}"
+  /Applications/Charles.app/Contents/MacOS/Charles convert ${source} ${target}
+}
+
+
+function party-pooper {
+  log_warn "Stopping all Charles Proxy and Sauce Connect processes."
+  
+  while [[ $(pkill -x Charles sc) ]]
+  do
+    sleep 2
+  done
+  log_info "Party clean up is complete."
+}
+
+
+function check_env {
+  # sauce credentials are used by sauce connect and never read or written to file
+  envList=${1}
+
+  for e in ${envList}
+  do
+    [[ -z ${!e} ]] && missing+="${e} "
+  done
+
+  if [ -n "${missing}" ]
+  then
+    log_error "Exiting NOTOK. Missing environment variable(s). Please set!"
+    log_loop "${missing}"
+    exit 128
+  fi
+
+}
+
+
+function check_env_sauce {
+
+  #log_info "Checking Sauce Labs environment configuration."
+
+  envList="SAUCE_USERNAME
+      SAUCE_ACCESS_KEY"
+
+  check_env "${envList}"
+  
+}
+
+
+function check_env_keystore {
+
+  #log_info "Checking keystore environment configuration."
+
+  envList="SAUCE_DEMO_KEY_ALIAS
+      SAUCE_DEMO_STORE_FILE
+      SAUCE_DEMO_KEY_PASSWORD
+      SAUCE_DEMO_STORE_PASSWORD"
+
+  check_env "${envList}"
+  
+}
+
+
+function check_env_testfairy {
+
+  #log_info "Checking TestFairy environment configuration."
+
+  envList="TESTFAIRY_SDK_TOKEN"
+     
+  check_env "${envList}"
+  
+}
+
+
+function check_bin {
+
+  binList="curl
+    jq
+    openssl
+    keytool
+    gh"
+  
+  curl="curl"
+  jq="jq"
+  openssl="openssl"
+  keytool="java"
+  gh="gh"
+
+  missing=""
+
+  for b in ${binList}
+  do
+    [[ -z $(command -v ${b}) ]] && [[ ! -z ${!b} ]] && missing+="${!b} "
+  done
+
+ [[ -z $(command -v brew) ]] \
+  && log_error "Exiting NOTOK. Missing brew. Please review install command below." \
+  && log_cmd '/bin/bash -c $(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)' && exit 127
+
+  if [ -n "${missing}" ]
+  then
+    log_error "Exiting NOTOK. Missing binary. Please review install command below."
+    log_cmd "brew install ${missing}"
+    exit 127
+  fi
+}
+
+
+function convert_keystore {
+  # convert keystore to github secret
+  # requires running buildKeystore first
+  openssl base64 < ${SRSF} |tr -d '\n' |tee ${SRSF}.txt
+}
+
+
+function load_keystore_env {
+  f="${keystoreFile}.env"
+  [[ -f "${f}" ]] && source ${f}
+}
+
+
+function accept_android_sdk_licenses {
+   yes | ~/Library/Android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses
+}
+
+
+function ip_get_details {
+  myIp=$(curl ifconfig.me)
+  myIpDetails=$(curl http://ip-api.com/json/${myIp})
+}
+
+
+function check_env_2 {
+  envList=${1}
+  optionalWarnOnly=${2}
+  missing=""
+
+  for e in ${envList}
+  do
+    [[ -z ${!e} ]] && missing+="${e} "
+  done
+
+  if [ -n "${missing}" ]
+  then
+    if [ -z ${optionalWarnOnly} ]
+    then
+        log_error "Exiting NOTOK. Missing environment variable(s). Please set!"
+        log_loop "${missing}"
+        exit 128
+    else
+        log_warn "Optional environment variable(s) not set."
+        log_loop "${missing}"
+    fi
+  fi
+
+}
+
+function check_env_optional {
+    check_env_2 "${1}" "optional"
+}
+
+
+function check_env_testfairy_upload {
+
+  envList="appVersion
+    appName
+    appFile
+    protoHost
+    platformName
+    packageName
+    uploadSauceStorage
+    TESTFAIRY_API_KEY"
+
+  envListOptional="releaseNotes
+    tags
+    folderName"
+
+  check_env "${envList}"
+  check_env_optional "${envListOptional}"
+  
+}
+
+
+function json_kv_get {
+    jq --arg key "${1}" --raw-output '.[$key]' <<< ${appMetaData}
+}
+
+
+[[ -z ${PARTY_MODE} ]] || printf "\n"
+log_debug "To exit quicksauce debug unset PARTY_MODE"
