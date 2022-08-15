@@ -1,0 +1,17 @@
+{
+    "platform": "playstation",
+    "appFile": "./apps/app-release.apk",
+    "appName": "My Demo App Playstation",
+    "tags": "games, playstation",
+    "folderName": "Console",
+    "packageName": "com.saucelabs.demoapp.ps",
+    "appIcon": "assets/message.png",
+    "releaseNotes": "",
+    "uploadSauceStorage": "no",
+    "autoUpdate": "yes",
+    "notify": "yes",
+    "appVersion": "1.2.0",
+    "groups": "circuitcity/a,blockbustervideo/a",
+    "landingPageMode": "open",
+    "metadata.locale": "us-en"
+}

@@ -8,7 +8,7 @@ _Powered by TestFairy™_
 _This source code is licensed under the MIT license found in the LICENSE file in the root directory of this source tree._
 
 <br>
-<img align="right" src="assets/logo.png">  
+<img align="right" src="assets/logo-sauce.png">  
 
 
 
@@ -30,10 +30,8 @@ _This source code is licensed under the MIT license found in the LICENSE file in
 <br>
 
 ```shell
-export PARTY_MODE="DEBUG"
-bash upload config/build-config-01.json "2.1.0"
-bash -x upload config/build-config-01.json 2.1.0
-./upload config/build-config-01.json "2.1.0" 
-
+git clone https://github.com/kmissoumi/sauce-101-beta-testing && cd sauce-101-beta-testing
+export TESTFAIRY_ACCESS_KEY=""
+./buildEnv
 ```
 

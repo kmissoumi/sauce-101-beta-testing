@@ -1,0 +1,17 @@
+{
+    "appName": "My Demo App Android",
+    "platform": "android",
+    "appFile": "./name.apk",
+    "tags": "beta, f2, android",
+    "folderName": "",
+    "packageName": "com.saucelabs.mydemo.app.android",
+    "appIcon": "",
+    "releaseNotes": "",
+    "uploadSauceStorage": "no",
+    "autoUpdate": "yes",
+    "notify": "yes",
+    "appVersion": "1.0.0",
+    "groups": "circuitcity/a,blockbustervideo/a",
+    "landingPageMode": "open",
+    "metadata.locale": "us-en"
+}

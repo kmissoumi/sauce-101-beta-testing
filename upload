@@ -25,53 +25,70 @@ function load_lib {
 
 function testfairy_upload {
 
+
+    [[ -z ${appName} ]] && appName=$(json_kv_get appName)
+    [[ -z ${appVersion} ]] && appVersion=$(json_kv_get appVersion)
+    [[ -z ${appFile} ]] && appFile="$(json_kv_get appFile)"
+    [[ ! -f ${appFile} ]] && log_error "File not found. Check appFile: ${appFile}" && exit 4
+    appIcon=$(json_kv_get appIcon)
+    [[ -z ${appIcon} ]] || uploadOptions="--form app_icon=@${appIcon}"
+    
     printf "\nUploading ${appName} ${appVersion}..."
 
     curlOptions="--silent --write-out "'\n%{http_code}'""
-    #curlOptions="--write-out "'\n%{http_code}'""
-
     r=$(curl ${protoHost}/api/upload ${curlOptions} \
-            --form api_key=${TESTFAIRY_API_KEY} \
-            --form file=@$(json_kv_get appFile) \
-            --form platform=$(json_kv_get platform) \
-            --form package_name=$(json_kv_get packageName) \
+            --form api_key="${TESTFAIRY_ACCESS_KEY}" \
+            --form file=@"${appFile}" \
+            --form platform="$(json_kv_get platform)" \
+            --form package_name="$(json_kv_get packageName)" \
             --form release_notes="$(json_kv_get releaseNotes)" \
             --form tags="$(json_kv_get tags)" \
-            --form folder_name=$(json_kv_get folderName) \
-            --form auto_update=$(json_kv_get autoUpdate) \
-            --form notify=$(json_kv_get notify) \
-            --form upload_to_saucelabs=$(json_kv_get uploadSauceStorage) \
+            --form folder_name="$(json_kv_get folderName)" \
+            --form auto_update="$(json_kv_get autoUpdate)" \
+            --form notify="$(json_kv_get notify)" \
+            --form upload_to_saucelabs="$(json_kv_get uploadSauceStorage)" \
             --form groups="$(json_kv_get groups)" \
-            --form app_version=${appVersion} \
-            --form app_name="${appName}")
+            --form app_version="${appVersion}" \
+            --form app_name="${appName}" \
+            ${uploadOptions})
+            
 
     curlRc=$?
+    # separate the HTTP status code from the response
     testFairyUploadHttpStatus="${r##*$'\n'}"
     testFairyUploadR="${r%????}"
+
+    # collect the TestFairy status code and message
     testFairyUploadCode=$(jq --raw-output '.code' <<< ${testFairyUploadR})
     testFairyUploadStatus=$(jq --raw-output '.status' <<< ${testFairyUploadR})
 
+    # add detail to response message
+    testFairyUploadR=$(jq --arg httpStatus ${testFairyUploadHttpStatus} '. += {"httpStatus": $httpStatus}' <<< "${testFairyUploadR}")
+    testFairyUploadR=$(jq --arg curlRc ${curlRc} '. += {"curlRc": $curlRc}' <<< "${testFairyUploadR}")
+
+    # check both api + upload success
     [[ ${testFairyUploadHttpStatus} == "200" ]] || log_error "testFairyUploadHttpStatus: %s" ${testFairyUploadHttpStatus}
     [[ ${testFairyUploadStatus} == "ok" ]] && printf "%s" "Done!" || exit 127
 
-    testFairyUploadR=$(jq  --arg httpStatus ${testFairyUploadHttpStatus} '. += {"httpStatus": $httpStatus}' <<< "${testFairyUploadR}")
-    testFairyUploadR=$(jq  --arg curlRc ${curlRc} '. += {"curlRc": $curlRc}' <<< "${testFairyUploadR}")
-
-    # check the response status & open a bowser on success
+    # print the landing page URL to standard out
     landingPageURL=$(jq --raw-output '.landing_page_url' <<< ${testFairyUploadR})
+    printf "\t landingPageUrl: %s" ${landingPageURL}
 
-    printf "\t landingPageUrl: %s\n" ${landingPageURL}
-    log_json_debug testFairyUploadR "testFairyUploadR-${appName}-${appVersion}"
+    # if PARTY_MODE is set to DEBUG print the response body to file
+    log_json testFairyUploadR "testFairyUploadR-${appName}-${appVersion}"
 
     exit 0
 } 
 
 
 load_lib
+check_env_testfairy_upload
+check_bin_testfairy_upload
 
-[[ -f ${1} ]] && appMetaData=$(jq '.' ${1})
-[[ -z ${2} ]] && appVersion=$(json_kv_get appVersion) || appVersion=${2} 
-appName="$(json_kv_get appName)"
+appMetaDataFile=${1}
+appVersion=${2}
+
+[[ ! -f ${appMetaDataFile} ]] && log_error "App Meta Data File not found!" || appMetaData=$(jq '.' ${appMetaDataFile})
 testfairy_upload
 
 exit 4

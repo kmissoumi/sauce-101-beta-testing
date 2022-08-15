@@ -1,0 +1,17 @@
+{
+    "appName": "Spectre",
+    "platform": "android",
+    "appFile": "./apps/app-release.apk",
+    "tags": "beta, android, evil, customer",
+    "folderName": "SPECTRE",
+    "packageName": "com.saucelabs.spectre.android",
+    "appIcon": "assets/logo-spectre.png",
+    "releaseNotes": "",
+    "uploadSauceStorage": "no",
+    "autoUpdate": "yes",
+    "notify": "yes",
+    "appVersion": "1.0.0",
+    "groups": "circuitcity/a,blockbustervideo/a",
+    "landingPageMode": "open",
+    "metadata.locale": "us-en"
+}

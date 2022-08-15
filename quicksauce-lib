@@ -31,15 +31,16 @@ function log_json_debug {
 
 
 function log_json {
-  [[ -z ${2} ]]  && fileName=${1} || fileName=${2}
+  [[ -z ${2} ]] && fileName=${1} || fileName=${2}
   [[ -z ${timeStamp} ]] && timeStamp=$(date +"%Y-%m-%d_%H%M%S_%s")
   scriptPath="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
   debugDir="${scriptPath}/.debug/${timeStamp}"
 
   [[ -d ${debugDir} ]] || mkdir -p ${debugDir}
-  jq <<< ${!1} > "${debugDir}/${fileName}.json"
-  log_debug "Variable ${1} written to directory."
-  log_cmd_debug "${debugDir}/${fileName}.json"
+  f=$(echo ${debugDir}/${fileName}| tr ' ' '-')
+  jq <<< ${!1} > "${f}.json"
+  log_debug "Variable ${1} written file."p
+  log_cmd_debug "${f}.json"
 }
 
 
@@ -144,11 +145,8 @@ function check_env_keystore {
 
 
 function check_env_testfairy {
-
-  #log_info "Checking TestFairy environment configuration."
-
-  envList="TESTFAIRY_SDK_TOKEN"
-     
+  envList="TESTFAIRY_SDK_TOKEN
+    TESTFAIRY_ACCESS_KEY"
   check_env "${envList}"
   
 }
@@ -167,6 +165,34 @@ function check_bin {
   openssl="openssl"
   keytool="java"
   gh="gh"
+
+  missing=""
+
+  for b in ${binList}
+  do
+    [[ -z $(command -v ${b}) ]] && [[ ! -z ${!b} ]] && missing+="${!b} "
+  done
+
+ [[ -z $(command -v brew) ]] \
+  && log_error "Exiting NOTOK. Missing brew. Please review install command below." \
+  && log_cmd '/bin/bash -c $(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)' && exit 127
+
+  if [ -n "${missing}" ]
+  then
+    log_error "Exiting NOTOK. Missing binary. Please review install command below."
+    log_cmd "brew install ${missing}"
+    exit 127
+  fi
+}
+
+
+function check_bin_testfairy_upload {
+  binList="curl
+    jq"
+  
+  curl="curl"
+  jq="jq"
+
 
   missing=""
 
@@ -242,8 +268,7 @@ function check_env_optional {
 }
 
 
-function check_env_testfairy_upload {
-
+function check_env_testfairy_upload_v0 {
   envList="appVersion
     appName
     appFile
@@ -251,7 +276,7 @@ function check_env_testfairy_upload {
     platformName
     packageName
     uploadSauceStorage
-    TESTFAIRY_API_KEY"
+    TESTFAIRY_ACCESS_KEY"
 
   envListOptional="releaseNotes
     tags
@@ -263,9 +288,16 @@ function check_env_testfairy_upload {
 }
 
 
+function check_env_testfairy_upload {
+  envList="TESTFAIRY_ACCESS_KEY"
+  check_env "${envList}"  
+}
+
+
 function json_kv_get {
     jq --arg key "${1}" --raw-output '.[$key]' <<< ${appMetaData}
 }
+
 
 
 [[ -z ${PARTY_MODE} ]] || printf "\n"

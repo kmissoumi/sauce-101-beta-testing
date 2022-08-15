@@ -1,0 +1,16 @@
+{
+        "platform": "xbox",
+        "appFile": "./apps/app-release.apk",
+        "appName": "My Demo App Xbox",
+        "tags": "games, xbox",
+        "folderName": "Console",
+        "packageName": "com.saucelabs.demoapp.xbox",
+        "appIcon": "assets/film.png",
+        "releaseNotes": "",
+        "uploadSauceStorage": "no",
+        "autoUpdate": "yes",
+        "notify": "yes",
+        "appVersion": "1.2.0",
+        "groups": "circuitcity/a,blockbustervideo/a",
+        "metadata.locale": "us-en"
+}
