@@ -23,10 +23,10 @@ function uplooper {
 load_lib
 
 printf "\nUploading to TestFairy..."
-uplooper "consoles/xbox"               "1.1 1.2 1.9"
-uplooper "consoles/playstation"        "7.4 8.4 12.1"
-uplooper "consoles/switch"             "6.1 8.1 19.1"
-uplooper "consoles/win"                "17.1 17.8 19.2"
+uplooper "consoles/xbox"                "1.1 1.2 1.9"
+uplooper "consoles/playstation"         "7.4 8.4 12.1"
+uplooper "consoles/switch"              "6.1 8.1 19.1"
+uplooper "consoles/win"                 "17.1 17.8 19.2"
 uplooper "mobile/base-android"          "0.2 0.3 1.0"
 uplooper "mobile/base-ios"              "0.2 0.3 1.0"
 uplooper "mobile/org-ue-android"        "0.3 0.4 0.5"
@@ -35,6 +35,6 @@ uplooper "mobile/org-spectre-android"   "0.3 0.4 0.5"
 uplooper "mobile/org-spectre-ios"       "0.3 0.4 0.5"
 uplooper "mobile/sdk-android"           "0.2 0.6 0.9 1.0 1.1"
 uplooper "mobile/sdk-ios"               "0.3 0.6 0.8 1.0 1.1. 1.2"
-printf "\n Uploads complete!\n"
+printf "\nUploads complete!\n"
 
 exit 0

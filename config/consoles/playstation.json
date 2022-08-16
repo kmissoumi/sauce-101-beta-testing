@@ -1,6 +1,6 @@
 {
     "platform": "playstation",
-    "appFile": "./apps/app-release.apk",
+    "appFile": "./apps/my-demo-app.apk",
     "appName": "My Demo App Playstation",
     "tags": "games, playstation",
     "folderName": "Console",

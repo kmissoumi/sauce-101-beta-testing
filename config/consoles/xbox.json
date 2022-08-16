@@ -1,6 +1,6 @@
 {
         "platform": "xbox",
-        "appFile": "./apps/app-release.apk",
+        "appFile": "./apps/my-demo-app.apk",
         "appName": "My Demo App Xbox",
         "tags": "games, xbox",
         "folderName": "Console",

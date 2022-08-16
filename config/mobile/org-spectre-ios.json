@@ -1,7 +1,7 @@
 {
     "appName": "Spectre",
     "platform": "ios",
-    "appFile": "./apps/app-release.apk",
+    "appFile": "./apps/my-demo-app.ipa",
     "tags": "beta, ios, evil, customer",
     "folderName": "SPECTRE",
     "packageName": "com.saucelabs.spectre.ios",

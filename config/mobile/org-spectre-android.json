@@ -1,7 +1,7 @@
 {
     "appName": "Spectre",
     "platform": "android",
-    "appFile": "./apps/app-release.apk",
+    "appFile": "./apps/my-demo-app.apk",
     "tags": "beta, android, evil, customer",
     "folderName": "SPECTRE",
     "packageName": "com.saucelabs.spectre.android",

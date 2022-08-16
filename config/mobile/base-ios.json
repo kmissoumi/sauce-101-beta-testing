@@ -1,7 +1,7 @@
 {
     "appName": "My Demo App iOS",
     "platform": "ios",
-    "appFile": "./apps/app-release.apk",
+    "appFile": "./apps/my-demo-app.ipa",
     "tags": "beta, f2, ios",
     "folderName": "",
     "packageName": "com.saucelabs.mydemo.app.ios",

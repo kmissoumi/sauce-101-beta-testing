@@ -1,7 +1,7 @@
 {
     "appName": "My Demo App Android",
     "platform": "android",
-    "appFile": "./apps/app-release.apk",
+    "appFile": "./apps/my-demo-app.apk",
     "tags": "beta, f2, android",
     "folderName": "",
     "packageName": "com.saucelabs.mydemo.app.android",

@@ -1,7 +1,7 @@
 {
     "appName": "Universal Exports",
     "platform": "ios",
-    "appFile": "./apps/app-release.apk",
+    "appFile": "./apps/my-demo-app.ipa",
     "tags": "beta, ios, customer",
     "folderName": "Universal Exports",
     "packageName": "com.saucelabs.universalexports.ios",
