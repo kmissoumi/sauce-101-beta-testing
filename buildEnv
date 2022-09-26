@@ -13,10 +13,11 @@ function load_lib {
 
 
 function uplooper {
-      for appVersion in ${2}
-        do
-        ./upload "config/${1}.json" "${appVersion}"
-    done
+  for appVersion in ${2}
+    do
+    ./upload "config/${1}.json" "${appVersion}"
+   done
+   printf "\nUpload for group ${1} is complete!\n"
 }
 
 
@@ -34,7 +35,7 @@ uplooper "mobile/org-ue-ios"            "0.3 0.4 0.5"
 uplooper "mobile/org-spectre-android"   "0.3 0.4 0.5"
 uplooper "mobile/org-spectre-ios"       "0.3 0.4 0.5"
 uplooper "mobile/sdk-android"           "0.2 0.6 0.9 1.0 1.1"
-uplooper "mobile/sdk-ios"               "0.3 0.6 0.8 1.0 1.1. 1.2"
+uplooper "mobile/sdk-ios"               "0.3 0.6 0.8 1.0 1.1 1.2"
 printf "\nUploads complete!\n"
 
 exit 0
